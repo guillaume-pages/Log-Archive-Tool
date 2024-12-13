@@ -1,21 +1,25 @@
 import argparse
+import datetime
 from pathlib import Path
 import subprocess
+import shutil
 
 def createArchive(directory):
-    print(directory)
-    print(type(directory))
-    print("function to create an archive")
+    x = datetime.datetime.now()
+    date = x.strftime("%Y") + x.strftime("%m") + x.strftime("%d") + "_" + x.strftime("%H") + x.strftime("%M") + x.strftime("%S")
+    archiveName = "logs_archive_" + date
+
+    compressed_file = shutil.make_archive(
+        base_name=archiveName,
+        format='gztar',
+        root_dir=directory
+    )
 
 def moveArchive():
     print("function to move the archive")
 
 def checkIfIsADirectory(path):
-    print("function to check if the argument is a directory")
-    
     if isinstance(path, Path) and path.is_dir():
-        print("It's a directory")
-        # createArchive(path)
         is_empty(path)
         if is_empty(path) == True:
             print("Directory is empty, provide a directory with some folders or files.")
@@ -25,19 +29,6 @@ def checkIfIsADirectory(path):
         print("It's not a directory. Provide a directory to use the CLI tool.")
 
 def is_empty(path):        
-    # result = subprocess.run(["ls", "-l", path], capture_output=True, text=True)
-        
-    # if result.returncode == 0:
-    #     print(result.stdout)
-    #     print("result =", result)
-    #     print("len(result.stdout) =", len(result.stdout) )
-    #     print("type(result.stdout)", type(result.stdout))
-    #     if result.stdout == "total 0\n":
-    #         print("empty directory")
-    #     else:
-    #         print("not empty")
-    # else:
-    #     print(f"Error when using the command : {result.stderr}")
     if not any(path.iterdir()):
         return True
     else:
@@ -56,9 +47,6 @@ def main():
     args = parser.parse_args()
 
     directory_path = Path(args.path)
-
-    print('=========================')
-    print(f"Provided path: {directory_path}")
 
     checkIfIsADirectory(directory_path)
 
