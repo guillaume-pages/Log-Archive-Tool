@@ -1,8 +1,8 @@
 import argparse
 import datetime
 from pathlib import Path
-import subprocess
 import shutil
+import os
 
 def createArchive(directory):
     x = datetime.datetime.now()
@@ -15,8 +15,9 @@ def createArchive(directory):
         root_dir=directory
     )
 
-def moveArchive():
-    print("function to move the archive")
+    archive_dir = Path(archiveName)
+    archive_dir.mkdir(exist_ok=True)
+    shutil.move(compressed_file, archive_dir)
 
 def checkIfIsADirectory(path):
     if isinstance(path, Path) and path.is_dir():
